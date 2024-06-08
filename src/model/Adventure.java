@@ -10,20 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Adventure {
-    private final List<Crewmember> crew;
+    private final List<CrewMember> crew;
+    private final List<Meal> meals;
 
     public Adventure() {
         crew = new ArrayList<>();
+        meals = new ArrayList<>();
     }
 
-    public void addCrewmember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
-        Crewmember newCrewmember = new Crewmember(name, age, height, weight, gender, activity);
-        crew.add(newCrewmember);
+    public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
+        CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity);
+        crew.add(newCrewMember);
+    }
+
+    public void addMeal() {
+        Meal newMeal = new Meal("Unnamed meal");
+        meals.add(newMeal);
     }
 
     public void showMembersDailyKCalNeed() {
 
-        for (Crewmember crewmember : crew) {
+        for (CrewMember crewmember : crew) {
             System.out.println();
             System.out.println(crewmember.getName());
             KCalCalculationStrategy harris = new HarrisBenedictOriginal();

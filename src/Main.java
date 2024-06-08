@@ -10,8 +10,8 @@ public class Main {
 
         Adventure test_adventure = new Adventure();
 
-        test_adventure.addCrewmember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
-        test_adventure.addCrewmember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
+        test_adventure.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
+        test_adventure.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
 
         test_adventure.showMembersDailyKCalNeed();
 
