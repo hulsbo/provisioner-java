@@ -1,23 +1,24 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Meal {
-    private String mealName;
-    private final List<Ingredient> ingredientList;
+public class Meal extends BaseClass {
+    private final String name;
 
     public Meal(String name) {
-        this.mealName = name;
-        this.ingredientList = new ArrayList<>();
+        this.name = name;
     }
-
-    public void addIngredient() {
-        Ingredient newIngredient = new Ingredient("Unnamed ingredient");
-        ingredientList.add(newIngredient);
+    public String getName() {
+        return name;
     }
-
-    public String getMealName() {
-        return mealName;
+    public void addIngredient(String defaultName) {
+        if (nameIndex.containsValue(nameIndex.get(defaultName))) {
+            System.out.println("Entry with that name already exist.");
+            return;
+        }
+        double weightedValue = giveSpaceForAnotherEntry();
+        Ingredient newIngredient = new Ingredient(defaultName);
+        UUID key = UUID.randomUUID();
+        putEntry(key, weightedValue, newIngredient);
     }
 }
