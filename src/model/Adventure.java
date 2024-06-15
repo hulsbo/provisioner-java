@@ -9,24 +9,17 @@ import java.util.*;
 
 public class Adventure extends BaseClass{
     private final List<CrewMember> crew;
-    private final Map<UUID, Meal> meals;
-    private final Map<UUID, Double> mealRatios;
 
     public Adventure(String name) {
-        this.name = "Unnamed Adventure";
         crew = new ArrayList<>();
-        meals = new HashMap<>();
-        mealRatios = new HashMap<>();
     }
 
     /**
      * Add a new meal to meals hashmap and the ratios hashmap using the same key.
      */
-    public void addMeal() {
+    public void addMeal(Meal newMeal) {
         double weightedValue = giveSpaceForAnotherEntry();
-        Meal newMeal = new Meal();
-        UUID key = UUID.randomUUID();
-        putEntry(key, weightedValue, newMeal);
+        putEntry(newMeal.getId(), weightedValue, newMeal);
     }
     public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
         CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity);

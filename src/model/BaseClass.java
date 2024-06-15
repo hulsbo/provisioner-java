@@ -8,6 +8,13 @@ public abstract class BaseClass {
     protected final Map<UUID, Double> ratioMap = new HashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
     protected String name;
+    protected UUID uuid;
+
+    public BaseClass() {
+        this.uuid = UUID.randomUUID();
+        this.name = "Unnamed " + getClass().getSimpleName();
+    }
+
     public String getName() {
         return this.name;
     }
@@ -18,6 +25,11 @@ public abstract class BaseClass {
         }
         this.name = name;
     }
+
+    protected UUID getId() {
+        return this.uuid;
+    }
+
     public NutrientsMap getNutrientsMap() {
         return nutrientsMap;
     }

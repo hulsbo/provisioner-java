@@ -3,13 +3,9 @@ package model;
 import java.util.*;
 
 public class Meal extends BaseClass {
-    public Meal() {
-        this.name = "Unnamed meal";
+
+    public void addIngredient(Ingredient newIngredient) {
+        putEntry(newIngredient.getId(), 0.0, newIngredient);
     }
-    public void addIngredient() {
-        double weightedValue = giveSpaceForAnotherEntry();
-        Ingredient newIngredient = new Ingredient();
-        UUID key = UUID.randomUUID();
-        putEntry(key, weightedValue, newIngredient);
     }
 }

@@ -1,5 +1,6 @@
 import model.Adventure;
 import model.BaseClass;
+import model.Ingredient;
 import model.Meal;
 
 import java.util.Scanner;
@@ -22,7 +23,7 @@ public class Main {
 
         for (;;) {
 
-            testMeal.addIngredient();
+            testMeal.addIngredient(new Ingredient());
             System.out.print("Type the name of the meal: ");
             String name = input.nextLine();
             testMeal.printEntries();
@@ -31,7 +32,7 @@ public class Main {
 
             System.out.print("Type the name of the meal: ");
             String name2 = input.nextLine();
-            testMeal.addIngredient();
+            testMeal.addIngredient(new Ingredient());
             testMeal.printEntries();
 
 
