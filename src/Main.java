@@ -21,28 +21,44 @@ public class Main {
 //
         // testMeal.showMembersDailyKCalNeed();
 
+
+        // Testing the absolute value map for meals' ingredients
         for (;;) {
-
-            testMeal.addIngredient(new Ingredient());
-            System.out.print("Type the name of the meal: ");
+            System.out.print("Type the name of the ingredient: ");
+            input.nextLine();
             String name = input.nextLine();
-            testMeal.printEntries();
-            testMeal.setNutrientsMap();
-            System.out.println(testMeal.getNutrientsMap());
-
-            System.out.print("Type the name of the meal: ");
-            String name2 = input.nextLine();
-            testMeal.addIngredient(new Ingredient());
-            testMeal.printEntries();
-
-
-            System.out.print("Type the name of the meal to remove: ");
-            String removeString = input.nextLine();
-            testMeal.removeEntry(removeString);
-            testMeal.printEntries();
-
+            Ingredient newIngredient = new Ingredient();
+           testMeal.addIngredient(newIngredient);
+            newIngredient.setName(name);
+            System.out.print("Type the weight of the ingredient: ");
+            double weight = input.nextDouble();
+            testMeal.modifyWeightOfIngredient(newIngredient.getId(), weight);
+           testMeal.printEntries();
 
         }
+
+    //    for (;;) {
+//
+    //        testMeal.addIngredient(new Ingredient());
+    //        System.out.print("Type the name of the meal: ");
+    //        String name = input.nextLine();
+    //        testMeal.printEntries();
+    //        testMeal.setNutrientsMap();
+    //        System.out.println(testMeal.getNutrientsMap());
+//
+    //        System.out.print("Type the name of the meal: ");
+    //        String name2 = input.nextLine();
+    //        testMeal.addIngredient(new Ingredient());
+    //        testMeal.printEntries();
+//
+//
+    //        System.out.print("Type the name of the meal to remove: ");
+    //        String removeString = input.nextLine();
+    //        testMeal.removeEntry(removeString);
+    //        testMeal.printEntries();
+//
+//
+    //    }
 
     }
 }

@@ -26,7 +26,7 @@ public abstract class BaseClass {
         this.name = name;
     }
 
-    protected UUID getId() {
+    public UUID getId() {
         return this.uuid;
     }
 
@@ -118,7 +118,7 @@ public abstract class BaseClass {
      * @param newWeightedValue The new weighted value.
      * @throws IllegalArgumentException if the key is not present in entriesMap.
      */
-    protected void putEntry(UUID key, Double newWeightedValue) {
+    protected void modifyEntry(UUID key, Double newWeightedValue) {
         if (!ratioMap.containsKey(key)) {
             throw new IllegalArgumentException("Key not present in ratioMap.");
         }
@@ -133,7 +133,7 @@ public abstract class BaseClass {
      * @param newEntry The new entry object.
      * @throws IllegalArgumentException if the key is not present in entriesMap.
      */
-    protected void putEntry(UUID key, BaseClass newEntry) {
+    protected void modifyEntry(UUID key, BaseClass newEntry) {
         if (!entriesMap.containsKey(key)) {
             throw new IllegalArgumentException("Key not present in entriesMap.");
         }
@@ -159,7 +159,7 @@ public abstract class BaseClass {
         scaleEntriesOnRemoval(weightedValue);
     }
 
-    private void updateNameIndex() {
+    protected void updateNameIndex() {
         nameIndex.clear();
         for (UUID key : entriesMap.keySet()) {
             nameIndex.put(entriesMap.get(key).getName(), key);
