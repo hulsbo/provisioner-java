@@ -13,7 +13,7 @@ import static util.PhysicalActivity.*;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        Meal testMeal = new Meal("test");
+        Meal testMeal = new Meal();
 
         // testMeal.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
         // testMeal.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
@@ -21,16 +21,17 @@ public class Main {
         // testMeal.showMembersDailyKCalNeed();
 
         for (;;) {
+
+            testMeal.addIngredient();
             System.out.print("Type the name of the meal: ");
             String name = input.nextLine();
-            testMeal.addIngredient(name);
             testMeal.printEntries();
             testMeal.setNutrientsMap();
             System.out.println(testMeal.getNutrientsMap());
 
             System.out.print("Type the name of the meal: ");
             String name2 = input.nextLine();
-            testMeal.addIngredient(name2);
+            testMeal.addIngredient();
             testMeal.printEntries();
 
 

@@ -7,8 +7,17 @@ public abstract class BaseClass {
     protected final Map<UUID, BaseClass> entriesMap = new HashMap<>();
     protected final Map<UUID, Double> ratioMap = new HashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
-
-    public abstract String getName();
+    protected String name;
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        if (nameIndex.containsValue(nameIndex.get(name))) {
+            System.out.println(getClass().getSimpleName() + " with that name already exist.");
+            return;
+        }
+        this.name = name;
+    }
     public NutrientsMap getNutrientsMap() {
         return nutrientsMap;
     }
@@ -40,7 +49,6 @@ public abstract class BaseClass {
      * @return the value of the new allocated space
      */
     protected double giveSpaceForAnotherEntry() {
-
         double size = ratioMap.size();
         double oldEntriesAllowedSpace = size / (size + 1);
         double sumNewValue = 0.0;

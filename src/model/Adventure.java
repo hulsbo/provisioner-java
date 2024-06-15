@@ -8,30 +8,31 @@ import util.PhysicalActivity;
 import java.util.*;
 
 public class Adventure extends BaseClass{
-    private final String name;
     private final List<CrewMember> crew;
     private final Map<UUID, Meal> meals;
     private final Map<UUID, Double> mealRatios;
 
     public Adventure(String name) {
-        this.name = name;
+        this.name = "Unnamed Adventure";
         crew = new ArrayList<>();
         meals = new HashMap<>();
         mealRatios = new HashMap<>();
     }
 
+    /**
+     * Add a new meal to meals hashmap and the ratios hashmap using the same key.
+     */
+    public void addMeal() {
+        double weightedValue = giveSpaceForAnotherEntry();
+        Meal newMeal = new Meal();
+        UUID key = UUID.randomUUID();
+        putEntry(key, weightedValue, newMeal);
+    }
     public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
         CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity);
         crew.add(newCrewMember);
     }
-    public void printMeals() {
-        meals.forEach((key, value) -> {
-            System.out.printf("%s:%n", value.getName());
-            System.out.printf("%s %% %n", mealRatios.get(key)*100);
-        });
-    }
-    public void showMembersDailyKCalNeed() {
-
+    public void printMembersDailyKCalNeed() {
         for (CrewMember crewmember : crew) {
             System.out.println();
             System.out.println(crewmember.getName());
@@ -43,25 +44,5 @@ public class Adventure extends BaseClass{
             System.out.println("Mifflin St Jeor: " + (int) crewmember.getDailyKCalNeed(MifflinStJeor)  + " KCal / Day");
         }
     }
-
-    /**
-     * Add a new meal to meals hashmap and the ratios hashmap using the same key.
-     */
-    public void addMeal(String defaultName) {
-        if (nameIndex.containsValue(nameIndex.get(defaultName))) {
-            System.out.println("Entry with that name already exist.");
-            return;
-        }
-        double weightedValue = giveSpaceForAnotherEntry();
-        Meal newMeal = new Meal(defaultName);
-        UUID key = UUID.randomUUID();
-        putEntry(key, weightedValue, newMeal);
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
     // Other methods for managing the crew if needed
 }
