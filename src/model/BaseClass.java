@@ -31,13 +31,13 @@ public abstract class BaseClass {
 
         // Add all weighted nutrients of the baseclass to this baseclass' nutrientMap
         for (UUID key : entriesMap.keySet()) {
-            double propWeight = ratioMap.get(key);
+            double ratio = ratioMap.get(key);
             BaseClass baseClass = entriesMap.get(key);
             NutrientsMap baseClassNutrients = baseClass.getNutrientsMap();
 
             for (String nutrient : nutrients) {
                 nutrientsMap.merge(nutrient, baseClassNutrients.get(nutrient),
-                        (oldValue, newValue) -> (oldValue + newValue*propWeight));
+                        (oldValue, newValue) -> (oldValue + newValue*ratio));
             }
         }
     }
