@@ -33,6 +33,11 @@ public abstract class BaseClass {
     public NutrientsMap getNutrientsMap() {
         return nutrientsMap;
     }
+
+
+    /** Recalculates the nutrientsMap() based on entriesMap and ratiosMap
+     * This method should be run if any of these maps have been mutated.
+     */
     public void setNutrientsMap() {
         Set<String> nutrients = nutrientsMap.keySet();
 
@@ -105,6 +110,37 @@ public abstract class BaseClass {
         updateNameIndex();
         setNutrientsMap();
     }
+
+    /**
+     * Update the weighted value of an existing entry.
+     * The key must be present in entriesMap.
+     * @param key Key of the entry to update.
+     * @param newWeightedValue The new weighted value.
+     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     */
+    protected void putEntry(UUID key, Double newWeightedValue) {
+        if (!ratioMap.containsKey(key)) {
+            throw new IllegalArgumentException("Key not present in ratioMap.");
+        }
+        ratioMap.put(key, newWeightedValue);
+        setNutrientsMap();
+    }
+
+    /**
+     * Update the entry object of an existing entry.
+     * The key must be present in entriesMap.
+     * @param key Key of the entry to update.
+     * @param newEntry The new entry object.
+     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     */
+    protected void putEntry(UUID key, BaseClass newEntry) {
+        if (!entriesMap.containsKey(key)) {
+            throw new IllegalArgumentException("Key not present in entriesMap.");
+        }
+        entriesMap.put(key, newEntry);
+        setNutrientsMap();
+    }
+
 
     /**
      * Removes entry using name, updates name index and scales the ratioMap so all entries sum remains equal to 1.
