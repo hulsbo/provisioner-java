@@ -103,6 +103,7 @@ public abstract class BaseClass {
         }
     }
     public void printChildren() {
+        System.out.println("Entries for " + getClass().getSimpleName() + " \"" + getName() + "\"");
         childMap.forEach((key, value) -> {
             System.out.printf("%s - ", value.getChild().getName());
             System.out.printf("%s %% %n", childMap.get(key).getRatio()*100);
