@@ -6,7 +6,7 @@ import util.baseclass.NutrientsMap;
 import java.util.*;
 
 public abstract class BaseClass {
-    private final NutrientsMap nutrientsMap = new NutrientsMap();
+    protected final NutrientsMap nutrientsMap = new NutrientsMap();
     protected final Map<UUID, ChildWrapper> childMap = new LinkedHashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
     protected String name;
@@ -103,8 +103,9 @@ public abstract class BaseClass {
         System.out.println();
         childMap.forEach((key, value) -> {
             System.out.printf("%10s - ", value.getChild().getName());
-            System.out.printf("%.1f %% |", childMap.get(key).getRatio()*100);
-            System.out.printf(" %.1f grams %n", childMap.get(key).getAbsWeight());
+            System.out.printf("%4.1f %% |", childMap.get(key).getRatio()*100);
+            System.out.printf(" %.1f grams ", childMap.get(key).getAbsWeight());
+            System.out.printf(childMap.get(key).getChild().getNutrientsMap() + "%n");
         });
         System.out.println();
     }

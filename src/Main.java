@@ -3,6 +3,8 @@ import model.Ingredient;
 import model.Manager;
 import model.Meal;
 
+import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -19,19 +21,33 @@ public class Main {
         // testMeal.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
 //
         // testMeal.showMembersDailyKCalNeed();
-
+        SecureRandom random = new SecureRandom();
 
          // Testing meal
         for (;;) {
+
             System.out.println("Input name:");
             String name = input.nextLine();
-            UUID key = testMeal.putChild(new Ingredient());
-            Manager.getObject(key).setName(name);
-            System.out.println("Give a weight for " + name + ":");
-            double weight = input.nextDouble();
-            testMeal.modifyWeightOfIngredient(key, weight);
-            testMeal.printChildren();
-            input.nextLine();
+            while (!Objects.equals(name, "quit")) {
+                UUID key = testMeal.putChild(new Ingredient());
+                Manager.getObject(key).setName(name);
+                testMeal.modifyWeightOfIngredient(key, random.nextInt(1, 101));
+                System.out.println();
+                testMeal.printChildren();
+                System.out.println(testMeal.getNutrientsMap());
+                System.out.println("Input next ingredient name: (when done exit with 'quit')");
+                name = input.nextLine();
+            }
+            System.out.println(testMeal.getNutrientsMap());
+
+
+//            Manager.getObject(key).printChildren();
+//            System.out.println("Give a weight for " + name + ":");
+//            double weight = input.nextDouble();
+//            testMeal.modifyWeightOfIngredient(key, weight);
+//            testMeal.printChildren();
+//
+//            input.nextLine();
         }
 
         // Testing adventure

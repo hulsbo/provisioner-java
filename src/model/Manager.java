@@ -19,7 +19,6 @@ public class Manager {
             ChildWrapper elementOwnChild = index.get(key).childMap.get(id);
 
             if (elementOwnChild != null) {
-                System.out.println("Found parent: " + index.get(key).getName());
                 parents.add(index.get(key));
             }
         }
