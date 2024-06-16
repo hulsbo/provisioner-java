@@ -10,7 +10,7 @@ import java.util.*;
 public class Adventure extends BaseClass{
     private final List<CrewMember> crew;
 
-    public Adventure(String name) {
+    public Adventure() {
         crew = new ArrayList<>();
     }
 
