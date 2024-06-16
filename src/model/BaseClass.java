@@ -49,7 +49,7 @@ public abstract class BaseClass {
     /** Recalculates the nutrientsMap() based on entriesMap and ratiosMap
      * This method should be run if childMap has been updated.
      */
-    public void setNutrientsMap() {
+    protected void setNutrientsMap() {
         Set<String> nutrients = nutrientsMap.keySet();
 
         // Reset this baseclass nutrientsMap
