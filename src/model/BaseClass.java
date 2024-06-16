@@ -13,8 +13,10 @@ public abstract class BaseClass {
     protected UUID uuid;
 
     public BaseClass() {
-        this.uuid = UUID.randomUUID();
+        UUID id = UUID.randomUUID();
+        this.uuid = id;
         this.name = "Unnamed " + getClass().getSimpleName();
+        Manager.register(id, this);
     }
 
     public String getName() {
@@ -22,19 +24,12 @@ public abstract class BaseClass {
     }
     public void setName(String name) {
         this.name = name;
-    }
 
-    public void setChildName(UUID id, String name) {
-        if (nameIndex.containsValue(nameIndex.get(name))) {
-            System.out.println("Child with that name already exist.");
-            return;
+        // Update name index for all parents
+        Set<BaseClass> parents = Manager.findParents(this.getId());
+        for (BaseClass parent : parents) {
+            parent.updateNameIndex();
         }
-        if (!childMap.containsKey(id)) {
-            System.out.println("Child with that key is not present in childMap.");
-            return;
-        }
-        childMap.get(id).getChild().setName(name);
-        updateNameIndex();
     }
 
     public UUID getId() {

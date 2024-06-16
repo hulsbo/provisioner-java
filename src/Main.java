@@ -1,4 +1,6 @@
 import model.Adventure;
+import model.Ingredient;
+import model.Manager;
 import model.Meal;
 
 import java.util.Scanner;
@@ -11,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         Adventure testAdventure = new Adventure();
+        Meal testMeal = new Meal();
 
         // testMeal.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
         // testMeal.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
@@ -18,17 +21,30 @@ public class Main {
         // testMeal.showMembersDailyKCalNeed();
 
 
+         // Testing meal
         for (;;) {
-            System.out.println("Enter name of Adventure:");
+            System.out.println("Input name:");
             String name = input.nextLine();
-            UUID key = testAdventure.putChild(new Meal());
-            testAdventure.setName(name);
-            System.out.println("Enter name of Meal:");
-            String mealName = input.nextLine();
-            testAdventure.setChildName(key, mealName);
-            testAdventure.printChildren();
-            testAdventure.removeChild(mealName);
+            UUID key = testMeal.putChild(new Ingredient());
+            Manager.getObject(key).setName(name);
+            System.out.println("Give a weight for " + name + ":");
+            double weight = input.nextDouble();
+            testMeal.modifyWeightOfIngredient(key, weight);
+            testMeal.printChildren();
+            input.nextLine();
         }
+
+        // Testing adventure
+//        for (;;) {
+//            System.out.println("Enter name of Adventure:");
+//            String name = input.nextLine();
+//            UUID key = testAdventure.putChild(new Meal());
+//            testAdventure.setName(name);
+//            System.out.println("Enter name of Meal:");
+//            String mealName = input.nextLine();
+//            testAdventure.setChildName(key, mealName);
+//            testAdventure.printChildren();
+//        }
 
 
         // Testing the absolute value map for meals' ingredients
