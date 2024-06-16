@@ -7,7 +7,7 @@ import java.util.*;
 
 public abstract class BaseClass {
     private final NutrientsMap nutrientsMap = new NutrientsMap();
-    protected final Map<UUID, ChildWrapper> childMap = new HashMap<>();
+    protected final Map<UUID, ChildWrapper> childMap = new LinkedHashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
     protected String name;
     protected UUID uuid;
