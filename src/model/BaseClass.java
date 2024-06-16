@@ -105,12 +105,14 @@ public abstract class BaseClass {
      * @param newChild The new child to add.
      * @param newWeightedValue The weighted value of the child.
      * @param absWeight The absolute weight of the child.
+     * @return UUID key of newChild
      */
-    public void putChild(BaseClass newChild, Double newWeightedValue, Double absWeight) {
+    public UUID putChild(BaseClass newChild, Double newWeightedValue, Double absWeight) {
         ChildWrapper newChildWrapper = new ChildWrapper(newChild, newWeightedValue, absWeight);
         childMap.put(newChild.getId(), newChildWrapper);
         updateNameIndex();
         setNutrientsMap();
+        return newChild.getId();
     }
 
     /**

@@ -16,10 +16,12 @@ public class Adventure extends BaseClass{
 
     /**
      * Add a new meal to meals hashmap and the ratios hashmap using the same key.
+     *
+     * @return UUID key of newChild
      */
-    public void putChild(Meal newMeal) {
+    public UUID putChild(Meal newMeal) {
         double weightedValue = giveSpaceForAnotherEntry();
-        super.putChild(newMeal, weightedValue, 0.0);
+        return super.putChild(newMeal, weightedValue, 0.0);
     }
 
     public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
