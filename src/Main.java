@@ -37,28 +37,26 @@ public class Main {
 
         }
 
-    //    for (;;) {
-//
-    //        testMeal.addIngredient(new Ingredient());
-    //        System.out.print("Type the name of the meal: ");
-    //        String name = input.nextLine();
-    //        testMeal.printEntries();
-    //        testMeal.setNutrientsMap();
-    //        System.out.println(testMeal.getNutrientsMap());
-//
-    //        System.out.print("Type the name of the meal: ");
-    //        String name2 = input.nextLine();
-    //        testMeal.addIngredient(new Ingredient());
-    //        testMeal.printEntries();
-//
-//
-    //        System.out.print("Type the name of the meal to remove: ");
-    //        String removeString = input.nextLine();
-    //        testMeal.removeEntry(removeString);
-    //        testMeal.printEntries();
-//
-//
-    //    }
+        for (;;) {
+
+            testMeal.addIngredient(new Ingredient());
+            System.out.print("Type the name of the meal: ");
+            String name = input.nextLine();
+            testMeal.printEntries();
+            testMeal.setNutrientsMap();
+            System.out.println(testMeal.getNutrientsMap());
+
+            System.out.print("Type the name of the meal: ");
+            String name2 = input.nextLine();
+            testMeal.addIngredient(new Ingredient());
+            testMeal.printEntries();
+
+            System.out.print("Type the name of the meal to remove: ");
+            String removeString = input.nextLine();
+            testMeal.removeEntry(removeString);
+            testMeal.printEntries();
+
+        }
 
     }
 }

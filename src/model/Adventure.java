@@ -17,10 +17,11 @@ public class Adventure extends BaseClass{
     /**
      * Add a new meal to meals hashmap and the ratios hashmap using the same key.
      */
-    public void addMeal(Meal newMeal) {
+    public void putChild(Meal newMeal) {
         double weightedValue = giveSpaceForAnotherEntry();
-        putEntry(newMeal.getId(), weightedValue, newMeal);
+        super.putChild(newMeal, weightedValue, 0.0);
     }
+
     public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
         CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity);
         crew.add(newCrewMember);

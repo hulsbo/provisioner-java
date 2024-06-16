@@ -3,38 +3,36 @@ package model;
 import java.util.*;
 
 public class Meal extends BaseClass {
-    private final Map<UUID, Double> absWeightMap = new HashMap<>();
 
-    public void addIngredient(Ingredient newIngredient) {
-        UUID id = newIngredient.getId();
-        putEntry(id, 0.0, newIngredient);
-        absWeightMap.put(id, 0.0);
-    }
+
 
     /**
      * @param id id of ingredient
      * @param weight absolute weight in grams of ingredient
      */
     public void modifyWeightOfIngredient(UUID id, double weight) {
+        if (childMap.get(id) == null) {
+            throw new IllegalArgumentException("No such entry exist.");
+        }
         if (weight == 0) {
             throw new IllegalArgumentException("The weight cannot be 0.");
         }
 
-        absWeightMap.put(id, weight);
+        childMap.get(id).setAbsWeight(weight);
 
         // Calculate the current total weight
         double totalWeight = 0.0;
 
-        Set<UUID> entries = absWeightMap.keySet();
+        Set<UUID> keys = childMap.keySet();
 
-        for (UUID entry : entries) {
-            totalWeight += absWeightMap.get(entry);
+        for (UUID key : keys) {
+            totalWeight += childMap.get(key).getAbsWeight();
         }
 
         // update all ratios
-        for (UUID entry : entries) {
-            double weightedValue = absWeightMap.get(entry) / totalWeight;
-            modifyEntry(entry, weightedValue);
+        for (UUID key : keys) {
+            double weightedValue = childMap.get(key).getAbsWeight() / totalWeight;
+            modifyRatio(key, weightedValue);
         }
 
     }

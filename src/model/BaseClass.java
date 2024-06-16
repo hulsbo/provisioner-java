@@ -1,13 +1,13 @@
 package model;
 
+import util.baseclass.ChildWrapper;
 import util.baseclass.NutrientsMap;
 
 import java.util.*;
 
 public abstract class BaseClass {
     private final NutrientsMap nutrientsMap = new NutrientsMap();
-    protected final Map<UUID, BaseClass> entriesMap = new HashMap<>();
-    protected final Map<UUID, Double> ratioMap = new HashMap<>();
+    protected final Map<UUID, ChildWrapper> childMap = new HashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
     protected String name;
     protected UUID uuid;
@@ -49,9 +49,9 @@ public abstract class BaseClass {
         }
 
         // Add all weighted nutrients of the baseclass to this baseclass' nutrientMap
-        for (UUID key : entriesMap.keySet()) {
-            double ratio = ratioMap.get(key);
-            BaseClass baseClass = entriesMap.get(key);
+        for (UUID key : childMap.keySet()) {
+            double ratio = childMap.get(key).getRatio();
+            BaseClass baseClass = childMap.get(key).getChild();
             NutrientsMap baseClassNutrients = baseClass.getNutrientsMap();
 
             for (String nutrient : nutrients) {
@@ -63,21 +63,21 @@ public abstract class BaseClass {
 
 
     /**
-     * Resizes the percentage hashmap values assuming all take equal space and they take up all space.
+     * Resizes the percentage hashmap values assuming all take equal space, so their sum is one.
      * If empty returned weight is 1.
      * @return the value of the new allocated space
      */
     protected double giveSpaceForAnotherEntry() {
-        double size = ratioMap.size();
+        double size = childMap.size();
         double oldEntriesAllowedSpace = size / (size + 1);
         double sumNewValue = 0.0;
 
-        if (!ratioMap.isEmpty()) {
-            for (UUID key : ratioMap.keySet()) {
-                double oldValue = ratioMap.get(key);
+        if (!childMap.isEmpty()) {
+            for (UUID key : childMap.keySet()) {
+                double oldValue = childMap.get(key).getRatio();
                 double newValue = oldValue * oldEntriesAllowedSpace;
                 sumNewValue += newValue;
-                ratioMap.replace(key, newValue);
+                childMap.get(key).setRatio(newValue);
             }
         }
         return 1 - sumNewValue;
@@ -88,27 +88,27 @@ public abstract class BaseClass {
      */
     protected void scaleEntriesOnRemoval(double weightedValue) {
         double scaleFactor = 1/(1-weightedValue);
-        for (UUID key : ratioMap.keySet()) {
-            double value = ratioMap.get(key);
-            ratioMap.put(key, value*scaleFactor);
+        for (UUID key : childMap.keySet()) {
+            double value = childMap.get(key).getRatio();
+            childMap.get(key).setRatio(value*scaleFactor);
         }
     }
     public void printEntries() {
-        entriesMap.forEach((key, value) -> {
-            System.out.printf("%s - ", value.getName());
-            System.out.printf("%s %% %n", ratioMap.get(key)*100);
+        childMap.forEach((key, value) -> {
+            System.out.printf("%s - ", value.getChild().getName());
+            System.out.printf("%s %% %n", childMap.get(key).getRatio()*100);
         });
     }
 
     /**
      * Base method for putting new entries and updating name index. See subclass for full method.
-     * @param key Key of the entry to add.
-     * @param newWeightedValue The weighted value of the new entry.
-     * @param newEntry The new entry object of class BaseClass.
+     * @param newChild The new child to add.
+     * @param newWeightedValue The weighted value of the child.
+     * @param absWeight The absolute weight of the child.
      */
-    protected void putEntry(UUID key, Double newWeightedValue, BaseClass newEntry) {
-        ratioMap.put(key, newWeightedValue);
-        entriesMap.put(key, newEntry);
+    public void putChild(BaseClass newChild, Double newWeightedValue, Double absWeight) {
+        ChildWrapper newChildWrapper = new ChildWrapper(newChild, newWeightedValue, absWeight);
+        childMap.put(newChild.getId(), newChildWrapper);
         updateNameIndex();
         setNutrientsMap();
     }
@@ -120,11 +120,31 @@ public abstract class BaseClass {
      * @param newWeightedValue The new weighted value.
      * @throws IllegalArgumentException if the key is not present in entriesMap.
      */
-    protected void modifyEntry(UUID key, Double newWeightedValue) {
-        if (!ratioMap.containsKey(key)) {
-            throw new IllegalArgumentException("Key not present in ratioMap.");
+    protected void modifyRatio(UUID key, Double newWeightedValue) {
+        if (!childMap.containsKey(key)) {
+            throw new IllegalArgumentException("Child with key not present in childMap.");
         }
-        ratioMap.put(key, newWeightedValue);
+        ChildWrapper childWrapper = childMap.get(key);
+        childWrapper.setRatio(newWeightedValue);
+        childMap.put(key, childWrapper);
+        setNutrientsMap();
+    }
+
+    /**
+     * Update the weighted value of an existing entry.
+     * The key must be present in entriesMap.
+     * @param key Key of the entry to update.
+     * @param newAbsWeight The new weighted value.
+     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     */
+
+    protected void modifyAbsWeight(UUID key, Double newAbsWeight) {
+        if (!childMap.containsKey(key)) {
+            throw new IllegalArgumentException("Child with key not present in childMap.");
+        }
+        ChildWrapper childWrapper = childMap.get(key);
+        childWrapper.setAbsWeight(newAbsWeight);
+        childMap.put(key, childWrapper);
         setNutrientsMap();
     }
 
@@ -132,14 +152,17 @@ public abstract class BaseClass {
      * Update the entry object of an existing entry.
      * The key must be present in entriesMap.
      * @param key Key of the entry to update.
-     * @param newEntry The new entry object.
+     * @param newChild The new entry object.
      * @throws IllegalArgumentException if the key is not present in entriesMap.
      */
-    protected void modifyEntry(UUID key, BaseClass newEntry) {
-        if (!entriesMap.containsKey(key)) {
-            throw new IllegalArgumentException("Key not present in entriesMap.");
+    protected void modifyChild(UUID key, BaseClass newChild) {
+        if (!childMap.containsKey(key)) {
+            throw new IllegalArgumentException("Child with key not present in childMap.");
         }
-        entriesMap.put(key, newEntry);
+        ChildWrapper childWrapper = childMap.get(key);
+        childWrapper.setChild(newChild);
+        childMap.put(key, childWrapper);
+        updateNameIndex();
         setNutrientsMap();
     }
 
@@ -154,17 +177,16 @@ public abstract class BaseClass {
             System.out.println("No entry with that name.");
             return;
         }
-        double weightedValue = ratioMap.get(key);
-        ratioMap.remove(key);
-        entriesMap.remove(key);
+        double weightedValue = childMap.get(key).getRatio();
+        childMap.remove(key);
         updateNameIndex();
         scaleEntriesOnRemoval(weightedValue);
     }
 
     protected void updateNameIndex() {
         nameIndex.clear();
-        for (UUID key : entriesMap.keySet()) {
-            nameIndex.put(entriesMap.get(key).getName(), key);
+        for (UUID key : childMap.keySet()) {
+            nameIndex.put(childMap.get(key).getChild().getName(), key);
         }
     }
 
