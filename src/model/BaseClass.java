@@ -21,11 +21,20 @@ public abstract class BaseClass {
         return this.name;
     }
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setChildName(UUID id, String name) {
         if (nameIndex.containsValue(nameIndex.get(name))) {
-            System.out.println(getClass().getSimpleName() + " with that name already exist.");
+            System.out.println("Child with that name already exist.");
             return;
         }
-        this.name = name;
+        if (!childMap.containsKey(id)) {
+            System.out.println("Child with that key is not present in childMap.");
+            return;
+        }
+        childMap.get(id).getChild().setName(name);
+        updateNameIndex();
     }
 
     public UUID getId() {
