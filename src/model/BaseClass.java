@@ -47,7 +47,7 @@ public abstract class BaseClass {
 
 
     /** Recalculates the nutrientsMap() based on entriesMap and ratiosMap
-     * This method should be run if any of these maps have been mutated.
+     * This method should be run if childMap has been updated.
      */
     public void setNutrientsMap() {
         Set<String> nutrients = nutrientsMap.keySet();
@@ -102,7 +102,7 @@ public abstract class BaseClass {
             childMap.get(key).setRatio(value*scaleFactor);
         }
     }
-    public void printEntries() {
+    public void printChildren() {
         childMap.forEach((key, value) -> {
             System.out.printf("%s - ", value.getChild().getName());
             System.out.printf("%s %% %n", childMap.get(key).getRatio()*100);
@@ -160,10 +160,10 @@ public abstract class BaseClass {
     }
 
     /**
-     * Update the entry object of an existing entry.
+     * Update the child of an existing ChildWrapper
      * The key must be present in entriesMap.
      * @param key Key of the entry to update.
-     * @param newChild The new entry object.
+     * @param newChild The new child object.
      * @throws IllegalArgumentException if the key is not present in entriesMap.
      */
     protected void modifyChild(UUID key, BaseClass newChild) {
@@ -182,7 +182,7 @@ public abstract class BaseClass {
      * Removes entry using name, updates name index and scales the ratioMap so all entries sum remains equal to 1.
      * @param name Name of the entry to remove.
      */
-    public void removeEntry(String name) {
+    public void removeChild(String name) {
         UUID key = nameIndex.get(name);
         if (key == null) {
             System.out.println("No entry with that name.");
