@@ -103,11 +103,15 @@ public abstract class BaseClass {
         }
     }
     public void printChildren() {
-        System.out.println("Entries for " + getClass().getSimpleName() + " \"" + getName() + "\"");
+        System.out.println();
+        System.out.println("Children for " + getClass().getSimpleName() + " \"" + getName() + "\":");
+        System.out.println();
         childMap.forEach((key, value) -> {
-            System.out.printf("%s - ", value.getChild().getName());
-            System.out.printf("%s %% %n", childMap.get(key).getRatio()*100);
+            System.out.printf("%10s - ", value.getChild().getName());
+            System.out.printf("%.1f %% |", childMap.get(key).getRatio()*100);
+            System.out.printf(" %.1f grams %n", childMap.get(key).getAbsWeight());
         });
+        System.out.println();
     }
 
     /**
