@@ -1,4 +1,4 @@
-package util;
+package util.CrewMember;
 
 /**
  * <p>The activity factor calculates the  on the basal metabolic rate (BMR).

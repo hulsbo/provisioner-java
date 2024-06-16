@@ -1,7 +1,7 @@
-package util.KCalCalculationStrategies;
+package util.CrewMember.KCalCalculationStrategies;
 
-import util.Gender;
-import util.PhysicalActivity;
+import util.CrewMember.Gender;
+import util.CrewMember.PhysicalActivity;
 
 public interface KCalCalculationStrategy {
     double determineBMR(int age, double height, double weight, Gender gender);

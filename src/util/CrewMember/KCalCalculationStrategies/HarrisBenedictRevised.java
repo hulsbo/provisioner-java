@@ -1,6 +1,6 @@
-package util.KCalCalculationStrategies;
+package util.CrewMember.KCalCalculationStrategies;
 
-import util.Gender;
+import util.CrewMember.Gender;
 
 public class HarrisBenedictRevised implements KCalCalculationStrategy {
     /**

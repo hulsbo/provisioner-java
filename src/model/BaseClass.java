@@ -1,5 +1,7 @@
 package model;
 
+import util.baseclass.NutrientsMap;
+
 import java.util.*;
 
 public abstract class BaseClass {

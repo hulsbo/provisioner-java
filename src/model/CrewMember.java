@@ -1,8 +1,8 @@
 package model;
 
-import util.Gender;
-import util.KCalCalculationStrategies.KCalCalculationStrategy;
-import util.PhysicalActivity;
+import util.CrewMember.Gender;
+import util.CrewMember.KCalCalculationStrategies.KCalCalculationStrategy;
+import util.CrewMember.PhysicalActivity;
 
 public class CrewMember {
     private final String name;

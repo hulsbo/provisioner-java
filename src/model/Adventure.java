@@ -1,10 +1,10 @@
 package model;
-import util.Gender;
-import util.KCalCalculationStrategies.HarrisBenedictOriginal;
-import util.KCalCalculationStrategies.HarrisBenedictRevised;
-import util.KCalCalculationStrategies.KCalCalculationStrategy;
-import util.KCalCalculationStrategies.MifflinStJeor;
-import util.PhysicalActivity;
+import util.CrewMember.Gender;
+import util.CrewMember.KCalCalculationStrategies.HarrisBenedictOriginal;
+import util.CrewMember.KCalCalculationStrategies.HarrisBenedictRevised;
+import util.CrewMember.KCalCalculationStrategies.KCalCalculationStrategy;
+import util.CrewMember.KCalCalculationStrategies.MifflinStJeor;
+import util.CrewMember.PhysicalActivity;
 import java.util.*;
 
 public class Adventure extends BaseClass{
