@@ -36,7 +36,7 @@ public abstract class BaseClass {
         return this.uuid;
     }
 
-    public NutrientsMap getNutrientsMap() {
+    protected NutrientsMap getNutrientsMap() {
         return nutrientsMap;
     }
 
@@ -97,16 +97,46 @@ public abstract class BaseClass {
             childMap.get(key).setRatio(value*scaleFactor);
         }
     }
-    public void printChildren() {
+    public void getInfo() {
         System.out.println();
-        System.out.println("Children for " + getClass().getSimpleName() + " \"" + getName() + "\":");
+        System.out.println("Summary " + "of " + getClass().getSimpleName() + " \"" + getName() + "\":");
         System.out.println();
         childMap.forEach((key, value) -> {
-            System.out.printf("%10s - ", value.getChild().getName());
-            System.out.printf("%4.1f %% |", childMap.get(key).getRatio()*100);
-            System.out.printf(" %.1f grams ", childMap.get(key).getAbsWeight());
-            System.out.printf(childMap.get(key).getChild().getNutrientsMap() + "%n");
+            System.out.printf("%10s |", value.getChild().getName());
+            System.out.printf(" ratio: " + "%5.1f %%", childMap.get(key).getRatio()*100);
+            if ( getClass() != Adventure.class) {
+                System.out.printf(" | weight: " + "%5.1f g", childMap.get(key).getAbsWeight());
+            }
+            Set<String> nutrients = childMap.get(key).getChild().getNutrientsMap().keySet();
+            for (String nutrient : nutrients) {
+                System.out.printf( " | %s: %4.1f %%", nutrient, childMap.get(key).getChild().getNutrientsMap().get(nutrient)*100);
+            }
+            System.out.println();
         });
+        System.out.println();
+        System.out.printf("%10s |", getClass().getSimpleName());
+        Set<UUID> children = childMap.keySet();
+        double sum = 0;
+
+        for (UUID id : children) {
+            sum += childMap.get(id).getRatio();
+        }
+
+        System.out.printf(" ratio: " + "%5.1f %%", sum * 100);
+
+        if ( getClass() != Adventure.class) {
+            sum = 0;
+            for (UUID id : children) {
+                sum += childMap.get(id).getAbsWeight();
+            }
+            System.out.printf(" | weight: " + "%5.1f g", sum);
+        }
+
+        Set<String> nutrients = getNutrientsMap().keySet();
+        for (String nutrient : nutrients) {
+            System.out.printf( " | %s: %4.1f %%", nutrient, getNutrientsMap().get(nutrient)*100);
+        }
+        System.out.println();
         System.out.println();
     }
 
@@ -117,7 +147,7 @@ public abstract class BaseClass {
      * @param absWeight The absolute weight of the child.
      * @return UUID key of newChild
      */
-    public UUID putChild(BaseClass newChild, Double newWeightedValue, Double absWeight) {
+    protected UUID putChild(BaseClass newChild, Double newWeightedValue, Double absWeight) {
         ChildWrapper newChildWrapper = new ChildWrapper(newChild, newWeightedValue, absWeight);
         childMap.put(newChild.getId(), newChildWrapper);
         updateNameIndex();
