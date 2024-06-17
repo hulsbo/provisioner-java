@@ -4,9 +4,7 @@ import model.Manager;
 import model.Meal;
 
 import java.security.SecureRandom;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -23,24 +21,39 @@ public class Main {
 //
         // testMeal.showMembersDailyKCalNeed();
         SecureRandom random = new SecureRandom();
+        Set<UUID> keys = new LinkedHashSet<>();
 
+
+        System.out.println("Input name of first meal:");
+        String mealName = input.nextLine();
          // Testing meal
-        for (;;) {
-
-            System.out.println("Input name:");
+        while (!Objects.equals(mealName, "quit")) {
+            Meal newMeal = new Meal();
+            newMeal.setName(mealName);
+            UUID id = newMeal.getId();
+            keys.add(id);
+            System.out.println("Input first ingredient of meal:");
             String name = input.nextLine();
             while (!Objects.equals(name, "quit")) {
-                UUID key = testMeal.putChild(new Ingredient());
+                UUID key = newMeal.putChild(new Ingredient());
                 Manager.getObject(key).setName(name);
-                testMeal.modifyWeightOfIngredient(key, random.nextInt(1, 101));
+                newMeal.modifyWeightOfIngredient(key, random.nextInt(1, 101));
                 System.out.println();
-                testMeal.printChildren();
-                System.out.println(testMeal.getNutrientsMap());
+                newMeal.getInfo();
                 System.out.println("Input next ingredient name: (when done exit with 'quit')");
                 name = input.nextLine();
             }
-            System.out.println(testMeal.getNutrientsMap());
-
+            System.out.println("Input name of next meal: (when done exit with 'quit')");
+            mealName = input.nextLine();
+        }
+            Adventure newAdventure = new Adventure();
+            System.out.println("Input name of Adventure: ");
+            String adventureName = input.nextLine();
+            newAdventure.setName(adventureName);
+            for (UUID key : keys) {
+                newAdventure.putChild((Meal) Manager.getObject(key));
+            }
+            newAdventure.getInfo();
 
 //            Manager.getObject(key).printChildren();
 //            System.out.println("Give a weight for " + name + ":");
@@ -85,4 +98,3 @@ public class Main {
 //        }
 
     }
-}
