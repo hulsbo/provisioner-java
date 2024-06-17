@@ -3,7 +3,7 @@ package util.baseclass;
 import java.util.*;
 
 public class NutrientsMap extends AbstractMap<String, Double> {
-    private final Map<String, Double> nutrientsMap = new HashMap<>();
+    private final Map<String, Double> nutrientsMap = new LinkedHashMap<>();
 
     public NutrientsMap() {
         nutrientsMap.put("protein", 5.0);
