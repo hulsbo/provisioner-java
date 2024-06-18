@@ -26,7 +26,7 @@ public class Ingredient extends BaseClass {
             throw new IllegalArgumentException("The weight cannot be 0.");
         }
 
-        childMap.get(id).setAbsWeight(weight);
+        childMap.get(id).setRecipeWeight(weight);
 
         // Calculate the current total weight
         double totalWeight = 0.0;
@@ -34,12 +34,12 @@ public class Ingredient extends BaseClass {
         Set<UUID> keys = childMap.keySet();
 
         for (UUID key : keys) {
-            totalWeight += childMap.get(key).getAbsWeight();
+            totalWeight += childMap.get(key).getRecipeWeight();
         }
 
         // update all ratios
         for (UUID key : keys) {
-            double weightedValue = childMap.get(key).getAbsWeight() / totalWeight;
+            double weightedValue = childMap.get(key).getRecipeWeight() / totalWeight;
             modifyRatio(key, weightedValue);
         }
     }

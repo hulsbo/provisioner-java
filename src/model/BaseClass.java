@@ -105,7 +105,7 @@ public abstract class BaseClass {
             System.out.printf("%10s |", value.getChild().getName());
             System.out.printf(" ratio: " + "%5.1f %%", childMap.get(key).getRatio()*100);
             if ( getClass() != Adventure.class) {
-                System.out.printf(" | weight: " + "%5.1f g", childMap.get(key).getAbsWeight());
+                System.out.printf(" | weight: " + "%5.1f g", childMap.get(key).getRecipeWeight());
             }
             Set<String> nutrients = childMap.get(key).getChild().getNutrientsMap().keySet();
             for (String nutrient : nutrients) {
@@ -113,6 +113,7 @@ public abstract class BaseClass {
             }
             System.out.println();
         });
+
         System.out.println();
         System.out.printf("%10s |", getClass().getSimpleName());
         Set<UUID> children = childMap.keySet();
@@ -127,7 +128,7 @@ public abstract class BaseClass {
         if ( getClass() != Adventure.class) {
             sum = 0;
             for (UUID id : children) {
-                sum += childMap.get(id).getAbsWeight();
+                sum += childMap.get(id).getRecipeWeight();
             }
             System.out.printf(" | weight: " + "%5.1f g", sum);
         }
@@ -138,6 +139,8 @@ public abstract class BaseClass {
         }
         System.out.println();
         System.out.println();
+
+        System.out.printf("Energy Density of Meal: %4.0f KCal/Kg %n%n", energyDensity);
     }
 
     /**
@@ -185,7 +188,7 @@ public abstract class BaseClass {
             throw new IllegalArgumentException("Child with key not present in childMap.");
         }
         ChildWrapper childWrapper = childMap.get(key);
-        childWrapper.setAbsWeight(newAbsWeight);
+        childWrapper.setRecipeWeight(newAbsWeight);
         childMap.put(key, childWrapper);
         setNutrientsMap();
     }
@@ -223,6 +226,7 @@ public abstract class BaseClass {
         childMap.remove(key);
         updateNameIndex();
         scaleEntriesOnRemoval(weightedValue);
+        setNutrientsMap();
     }
 
     protected void updateNameIndex() {
