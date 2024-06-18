@@ -6,12 +6,12 @@ public class NutrientsMap extends AbstractMap<String, Double> {
     private final Map<String, Double> nutrientsMap = new LinkedHashMap<>();
 
     public NutrientsMap() {
-        nutrientsMap.put("protein", 5.0);
-        nutrientsMap.put("fat", 5.0);
-        nutrientsMap.put("carbs", 5.0);
-        nutrientsMap.put("water", 5.0);
-        nutrientsMap.put("fiber", 5.0);
-        nutrientsMap.put("salt", 5.0);
+        nutrientsMap.put("protein", 0.0);
+        nutrientsMap.put("fat", 0.0);
+        nutrientsMap.put("carbs", 0.0);
+        nutrientsMap.put("water", 0.0);
+        nutrientsMap.put("fiber", 0.0);
+        nutrientsMap.put("salt", 0.0);
     }
 
     @Override
