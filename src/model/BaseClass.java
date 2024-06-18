@@ -9,6 +9,7 @@ public abstract class BaseClass {
     protected final NutrientsMap nutrientsMap = new NutrientsMap();
     protected final Map<UUID, ChildWrapper> childMap = new LinkedHashMap<>();
     protected final Map<String, UUID> nameIndex = new HashMap<>();
+    protected double energyDensity;
     protected String name;
     protected UUID uuid;
 
@@ -34,6 +35,18 @@ public abstract class BaseClass {
 
     public UUID getId() {
         return this.uuid;
+    }
+
+    public void setEnergyDensity() {
+        double carbsRatio = nutrientsMap.get("carbs");
+        double proteinRatio = nutrientsMap.get("protein");
+        double fatRatio = nutrientsMap.get("fat");
+
+        this.energyDensity = (carbsRatio+proteinRatio)*4000+fatRatio*9000;
+    }
+
+    private double getEnergyDensity() {
+        return this.energyDensity;
     }
 
     protected NutrientsMap getNutrientsMap() {
@@ -63,6 +76,7 @@ public abstract class BaseClass {
                         (oldValue, newValue) -> (oldValue + newValue*ratio));
             }
         }
+        setEnergyDensity();
     }
 
 
@@ -97,6 +111,10 @@ public abstract class BaseClass {
             childMap.get(key).setRatio(value*scaleFactor);
         }
     }
+
+    /**
+     * Print info about this object.
+     */
     public void getInfo() {
         System.out.println();
         System.out.println("Summary " + "of " + getClass().getSimpleName() + " \"" + getName() + "\":");
@@ -140,7 +158,7 @@ public abstract class BaseClass {
         System.out.println();
         System.out.println();
 
-        System.out.printf("Energy Density of Meal: %4.0f KCal/Kg %n%n", energyDensity);
+        System.out.printf("Energy Density of " + getClass().getSimpleName() + ": %4.0f KCal/Kg %n%n", energyDensity);
     }
 
     /**
