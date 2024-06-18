@@ -2,9 +2,15 @@ import model.Adventure;
 import model.Ingredient;
 import model.Manager;
 import model.Meal;
+import util.CrewMember.KCalCalculationStrategies.HarrisBenedictOriginal;
 
 import java.security.SecureRandom;
 import java.util.*;
+
+import static util.CrewMember.Gender.FEMALE;
+import static util.CrewMember.Gender.MALE;
+import static util.CrewMember.PhysicalActivity.HEAVY;
+import static util.CrewMember.PhysicalActivity.MODERATE;
 
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -13,11 +19,10 @@ public class Main {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
         Scanner input = new Scanner(System.in);
-        Adventure testAdventure = new Adventure();
+        Adventure testAdventure = new Adventure(new HarrisBenedictOriginal());
         Meal testMeal = new Meal();
 
-        // testMeal.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
-        // testMeal.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
+
 //
         // testMeal.showMembersDailyKCalNeed();
         SecureRandom random = new SecureRandom();
@@ -46,14 +51,18 @@ public class Main {
             System.out.println("Input name of next meal: (when done exit with 'quit')");
             mealName = input.nextLine();
         }
-            Adventure newAdventure = new Adventure();
+            Adventure newAdventure = new Adventure(new HarrisBenedictOriginal());
             System.out.println("Input name of Adventure: ");
             String adventureName = input.nextLine();
             newAdventure.setName(adventureName);
+            newAdventure.setDays(1);
+            newAdventure.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
+            newAdventure.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
             for (UUID key : keys) {
                 newAdventure.putChild((Meal) Manager.getObject(key));
             }
             newAdventure.getInfo();
+            newAdventure.printMembersDailyKCalNeed();
 
 //            Manager.getObject(key).printChildren();
 //            System.out.println("Give a weight for " + name + ":");
