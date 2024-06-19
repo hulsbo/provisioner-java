@@ -79,7 +79,7 @@ public class Adventure extends BaseClass{
 
     public void setNutrientsMap() {
        super.setNutrientsMap();
-       setCrewDailyKcalNeed(this.kCalCalculationStrategy);
+       setCrewDailyKcalNeed();
        setMealAndIngredientWeights();
     }
 
@@ -93,16 +93,16 @@ public class Adventure extends BaseClass{
         return super.putChild(newMeal, weightedValue, 0.0);
     }
 
-    public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity) {
-        CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity);
+    public void addCrewMember(String name, int age, double height, double weight, Gender gender, PhysicalActivity activity, KCalCalculationStrategy kCalCalculationStrategy) {
+        CrewMember newCrewMember = new CrewMember(name, age, height, weight, gender, activity, kCalCalculationStrategy);
         crew.add(newCrewMember);
-        setCrewDailyKcalNeed(this.kCalCalculationStrategy);
+        setCrewDailyKcalNeed();
     }
 
-    public void setCrewDailyKcalNeed(KCalCalculationStrategy strategy) {
+    public void setCrewDailyKcalNeed() {
         double sum = 0;
         for (CrewMember crewMember : crew) {
-            sum += crewMember.getDailyKCalNeed(strategy);
+            sum += crewMember.getDailyKCalNeed();
         }
         System.out.println(sum);
         this.crewDailyKcalNeed = sum;
@@ -117,23 +117,29 @@ public class Adventure extends BaseClass{
         return days;
     }
 
-    public void printMembersDailyKCalNeed() {
-        for (CrewMember crewmember : crew) {
-            System.out.println();
-            System.out.println(crewmember.getName());
-            KCalCalculationStrategy harris = new HarrisBenedictOriginal();
-            System.out.println("Harris original: " + (int) crewmember.getDailyKCalNeed(harris) + " KCal / Day");
-            KCalCalculationStrategy harrisRevised = new HarrisBenedictRevised();
-            System.out.println("Harris revised: " + (int) crewmember.getDailyKCalNeed(harrisRevised)  + " KCal / Day");
-            KCalCalculationStrategy MifflinStJeor = new MifflinStJeor();
-            System.out.println("Mifflin St Jeor: " + (int) crewmember.getDailyKCalNeed(MifflinStJeor)  + " KCal / Day");
-        }
-    }
-    // Other methods for managing the crew if needed
-
     public void getInfo() {
         System.out.println();
         System.out.println("Summary " + "of " + getClass().getSimpleName() + " \"" + getName() + "\":");
+        System.out.println();
+        System.out.println("Crew members: ".toUpperCase());
+        int i = 1;
+        for (CrewMember crewMember : crew) {
+            System.out.println();
+            System.out.printf("%25s %s %n", "Crew member " + i + ":", crewMember.getName());
+            System.out.printf("%25s %s %n", "Gender:"  ,crewMember.getGender().toString().toLowerCase());
+            System.out.printf("%25s %s %n", "Age:", crewMember.getAge());
+            System.out.printf("%25s %s %n", "Activity level:", crewMember.getActivity().toString().toLowerCase());
+            System.out.printf("%25s %.0f KCal %n", "Daily KCal need:", crewMember.getDailyKCalNeed());
+
+            i++;
+        }
+        System.out.println();
+        System.out.printf("%25s %.0f KCal %n", "Daily KCal need crew:", crewDailyKcalNeed);
+
+        System.out.println();
+
+        System.out.printf("Meals for %s days:".toUpperCase(), days);
+        System.out.println();
         System.out.println();
         childMap.forEach((key, value) -> {
             System.out.printf("%10s |", value.getChild().getName());
@@ -142,11 +148,27 @@ public class Adventure extends BaseClass{
             for (String nutrient : nutrients) {
                 System.out.printf( " | %s: %4.1f %%", nutrient, childMap.get(key).getChild().getNutrientsMap().get(nutrient)*100);
             }
-            System.out.printf(" | calc. weight: " + "%4.1f kg", mealWeights.get(childMap.get(key).getChild().getId()));
+            System.out.printf(" | calc. weight: " + "%4.2f kg", mealWeights.get(childMap.get(key).getChild().getId()));
+            System.out.println();
+            System.out.println();
+            // For adventures, also sum each ingredient for each meal
+            Map<UUID, ChildWrapper> childMapIngredient = value.getChild().childMap;
+            childMapIngredient.forEach((childMapIngredientKey, childMapIngredientValue) -> {
+                System.out.printf("%15s |", childMapIngredientValue.getChild().getName());
+                System.out.printf(" ratio: " + "%5.1f %%", childMapIngredient.get(childMapIngredientKey).getRatio()*100);
+                Set<String> ingredientNutrients = childMapIngredient.get(childMapIngredientKey).getChild().getNutrientsMap().keySet();
+                for (String nutrient : ingredientNutrients) {
+                    System.out.printf( " | %s: %4.1f %%", nutrient, childMapIngredient.get(childMapIngredientKey).getChild().getNutrientsMap().get(nutrient)*100);
+                }
+                System.out.printf(" | calc. weight: " + "%4.2f kg", ingredientWeights.get(childMapIngredient.get(childMapIngredientKey).getChild().getId()));
+                System.out.println();
+            });
+            System.out.println();
         });
 
-        System.out.println();
+        // Summary
         System.out.printf("%10s |", getClass().getSimpleName());
+
         Set<UUID> children = childMap.keySet();
         double sum = 0;
 
@@ -160,13 +182,12 @@ public class Adventure extends BaseClass{
         for (String nutrient : nutrients) {
             System.out.printf( " | %s: %4.1f %%", nutrient, getNutrientsMap().get(nutrient)*100);
         }
-        System.out.printf(" | calc. weight: " + "%4.1f kg", getWeight());
+        System.out.printf(" | calc. weight: " + "%4.2f kg", getWeight());
         System.out.println();
         System.out.println();
-
-        System.out.printf("Number of days: " + "%4s days %n%n", days);
         System.out.printf("Energy Density of " + getClass().getSimpleName() + ": %4.0f KCal/Kg %n", energyDensity);
-        System.out.printf("Daily KCal need of Crew: " + "%4.0f KCal/Kg %n%n", crewDailyKcalNeed);
+        System.out.println();
+        System.out.println("END OF SUMMARY");
     }
 
 }

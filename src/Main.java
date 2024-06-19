@@ -3,6 +3,7 @@ import model.Ingredient;
 import model.Manager;
 import model.Meal;
 import util.CrewMember.KCalCalculationStrategies.HarrisBenedictOriginal;
+import util.CrewMember.KCalCalculationStrategies.MifflinStJeor;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -28,41 +29,31 @@ public class Main {
         SecureRandom random = new SecureRandom();
         Set<UUID> keys = new LinkedHashSet<>();
 
-
-        System.out.println("Input name of first meal:");
-        String mealName = input.nextLine();
          // Testing meal
-        while (!Objects.equals(mealName, "quit")) {
+        for (int i = 0 ; i < 2 ; i++) {
             Meal newMeal = new Meal();
-            newMeal.setName(mealName);
+            newMeal.setName("Salad " + (i+1));
             UUID id = newMeal.getId();
             keys.add(id);
-            System.out.println("Input first ingredient of meal:");
-            String name = input.nextLine();
-            while (!Objects.equals(name, "quit")) {
+            for (int j = 0 ; j < 2 ; j++) {
                 UUID key = newMeal.putChild(new Ingredient());
-                Manager.getObject(key).setName(name);
-                newMeal.modifyWeightOfIngredient(key, random.nextInt(1, 101));
+                Manager.getObject(key).setName("Green " + (j+1));
+                newMeal.modifyWeightOfIngredient(key, random.nextInt(1, 101)); // Gen. random value of ingredient nutrients
                 System.out.println();
                 newMeal.getInfo();
-                System.out.println("Input next ingredient name: (when done exit with 'quit')");
-                name = input.nextLine();
             }
-            System.out.println("Input name of next meal: (when done exit with 'quit')");
-            mealName = input.nextLine();
         }
             Adventure newAdventure = new Adventure(new HarrisBenedictOriginal());
-            System.out.println("Input name of Adventure: ");
-            String adventureName = input.nextLine();
-            newAdventure.setName(adventureName);
-            newAdventure.setDays(1);
-            newAdventure.addCrewMember("Oskar Huledal", 35, 186, 75, MALE, HEAVY);
-            newAdventure.addCrewMember("Lovisa Huledal", 30, 180, 70, FEMALE, MODERATE);
+            newAdventure.setName("Salad days");
+            newAdventure.setDays(7);
+            newAdventure.addCrewMember("Oskar Huledal", 29, 186, 75, MALE, HEAVY, new HarrisBenedictOriginal());
+            newAdventure.addCrewMember("Lovisa Huledal", 31, 180, 70, FEMALE, MODERATE, new MifflinStJeor());
             for (UUID key : keys) {
                 newAdventure.putChild((Meal) Manager.getObject(key));
             }
             newAdventure.getInfo();
-            newAdventure.printMembersDailyKCalNeed();
+
+
 
 //            Manager.getObject(key).printChildren();
 //            System.out.println("Give a weight for " + name + ":");
