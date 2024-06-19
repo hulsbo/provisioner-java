@@ -245,6 +245,7 @@ public abstract class BaseClass {
         updateNameIndex();
         scaleEntriesOnRemoval(weightedValue);
         setNutrientsMap();
+        Manager.removeObject(key);
     }
 
     protected void updateNameIndex() {

@@ -26,8 +26,11 @@ public class Manager {
     }
 
     public static BaseClass getObject(UUID id) {
-
         return index.get(id);
+    }
+
+    public static void removeObject(UUID id) {
+        index.remove(id);
     }
 }
 
