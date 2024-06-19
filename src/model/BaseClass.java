@@ -248,6 +248,20 @@ public abstract class BaseClass {
         Manager.removeObject(key);
     }
 
+    /**
+     * Removes child using key, updates name index and scales the ratioMap so all children sum remains equal to 1.
+     * @param key Key of the child to remove.
+     */
+    public void removeChild(UUID key) {
+        double weightedValue = childMap.get(key).getRatio();
+        childMap.remove(key);
+        updateNameIndex();
+        scaleEntriesOnRemoval(weightedValue);
+        setNutrientsMap();
+        Manager.removeObject(key);
+    }
+
+
     protected void updateNameIndex() {
         nameIndex.clear();
         for (UUID key : childMap.keySet()) {
