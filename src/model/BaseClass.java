@@ -54,7 +54,7 @@ public abstract class BaseClass {
     }
 
 
-    /** Recalculates the nutrientsMap() based on entriesMap and ratiosMap
+    /** Recalculates the nutrientsMap() based on childMap and ratiosMap
      * This method should be run if childMap has been updated.
      */
     protected void setNutrientsMap() {
@@ -162,7 +162,7 @@ public abstract class BaseClass {
     }
 
     /**
-     * Base method for putting new entries and updating name index. See subclass for full method.
+     * Base method for putting new children and updating name index. See subclass for full method.
      * @param newChild The new child to add.
      * @param newWeightedValue The weighted value of the child.
      * @param absWeight The absolute weight of the child.
@@ -177,11 +177,11 @@ public abstract class BaseClass {
     }
 
     /**
-     * Update the weighted value of an existing entry.
-     * The key must be present in entriesMap.
-     * @param key Key of the entry to update.
+     * Update the weighted value of an existing child.
+     * The key must be present in childMap.
+     * @param key Key of the child to update.
      * @param newWeightedValue The new weighted value.
-     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     * @throws IllegalArgumentException if the key is not present in childMap.
      */
     protected void modifyRatio(UUID key, Double newWeightedValue) {
         if (!childMap.containsKey(key)) {
@@ -194,11 +194,11 @@ public abstract class BaseClass {
     }
 
     /**
-     * Update the weighted value of an existing entry.
-     * The key must be present in entriesMap.
-     * @param key Key of the entry to update.
+     * Update the weighted value of an existing child.
+     * The key must be present in childMap.
+     * @param key Key of the child to update.
      * @param newAbsWeight The new weighted value.
-     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     * @throws IllegalArgumentException if the key is not present in childMap.
      */
 
     protected void modifyAbsWeight(UUID key, Double newAbsWeight) {
@@ -213,10 +213,10 @@ public abstract class BaseClass {
 
     /**
      * Update the child of an existing ChildWrapper
-     * The key must be present in entriesMap.
-     * @param key Key of the entry to update.
+     * The key must be present in childMap.
+     * @param key Key of the child to update.
      * @param newChild The new child object.
-     * @throws IllegalArgumentException if the key is not present in entriesMap.
+     * @throws IllegalArgumentException if the key is not present in childrenMap.
      */
     protected void modifyChild(UUID key, BaseClass newChild) {
         if (!childMap.containsKey(key)) {
@@ -231,13 +231,13 @@ public abstract class BaseClass {
 
 
     /**
-     * Removes entry using name, updates name index and scales the ratioMap so all entries sum remains equal to 1.
-     * @param name Name of the entry to remove.
+     * Removes child using name, updates name index and scales the ratioMap so all children sum remains equal to 1.
+     * @param name Name of the child to remove.
      */
     public void removeChild(String name) {
         UUID key = nameIndex.get(name);
         if (key == null) {
-            System.out.println("No entry with that name.");
+            System.out.println("No child with that name.");
             return;
         }
         double weightedValue = childMap.get(key).getRatio();
